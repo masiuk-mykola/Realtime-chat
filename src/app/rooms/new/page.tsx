@@ -6,21 +6,17 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { LoadingSwap } from '@/components/ui/loading-swap';
+import { createRoomSchema } from '@/services/supabase/schemas/rooms';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
 
-const formSchema = z.object({
-  name: z.string().min(1).trim(),
-  isPublic: z.boolean(),
-});
-
-type FormData = z.infer<typeof formSchema>;
+type FormData = z.infer<typeof createRoomSchema>;
 
 export default function NewRoomPage() {
   const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createRoomSchema),
     defaultValues: {
       name: '',
       isPublic: false,
