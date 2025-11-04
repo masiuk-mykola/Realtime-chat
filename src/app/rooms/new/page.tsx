@@ -6,10 +6,12 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Field, FieldContent, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { LoadingSwap } from '@/components/ui/loading-swap';
+import createRoom from '@/services/supabase/actions/rooms';
 import { createRoomSchema } from '@/services/supabase/schemas/rooms';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import z from 'zod';
 
 type FormData = z.infer<typeof createRoomSchema>;
@@ -24,8 +26,9 @@ export default function NewRoomPage() {
   });
 
   async function handleSubmit(data: FormData) {
-    await new Promise((res) => setTimeout(res, 1000));
-    console.log(data);
+    const { error, message } = await createRoom(data);
+
+    if (error) toast.error(message);
   }
 
   return (
@@ -73,7 +76,7 @@ export default function NewRoomPage() {
               />
 
               <Field orientation="horizontal" className="w-full">
-                <Button type="submit" className="flex-grow" disabled={form.formState.isSubmitting}>
+                <Button type="submit" className="grow" disabled={form.formState.isSubmitting}>
                   <LoadingSwap isLoading={form.formState.isSubmitting}>Create Room</LoadingSwap>
                 </Button>
                 <Button variant="outline" asChild>
