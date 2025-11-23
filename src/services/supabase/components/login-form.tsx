@@ -9,7 +9,7 @@ import { useState } from 'react';
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(window.location.origin);
+  console.log(window?.location.origin);
   const handleSocialLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const supabase = createClient();
