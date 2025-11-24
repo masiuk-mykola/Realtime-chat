@@ -18,7 +18,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
 
     const redirectBase =
       typeof window !== 'undefined' ? window.location.origin : process.env.NEXT_PUBLIC_SITE_URL;
-
+    console.log('redirectBase', redirectBase);
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
@@ -26,7 +26,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
           redirectTo: `${redirectBase}/auth/oauth?next=/`,
         },
       });
-
+      console.log('qwe');
       if (error) throw error;
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : 'An error occurred');
