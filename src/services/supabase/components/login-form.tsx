@@ -4,15 +4,15 @@ import { cn } from '@/lib/utils';
 import { createClient } from '@/services/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<'div'>) {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log(window.location.origin);
-  }, []);
+  const redirectBase =
+    typeof window !== 'undefined' ? window.location.origin : process.env.NEXT_PUBLIC_SITE_URL;
+
   const handleSocialLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const supabase = createClient();
@@ -23,7 +23,8 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-          redirectTo: `${window.location.origin}/auth/oauth?next=/`,
+          // redirectTo: `${window.location.origin}/auth/oauth?next=/`,
+          redirectTo: `${redirectBase}/auth/oauth?next=/`,
         },
       });
 
